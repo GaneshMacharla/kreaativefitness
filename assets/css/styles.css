@@ -104,7 +104,13 @@ body::after {
   z-index: 0;
 }
 
-img, svg {
+img {
+  display: block;
+  max-width: 100%;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+svg {
   display: block;
   max-width: 100%;
 }

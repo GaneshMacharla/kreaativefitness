@@ -45,14 +45,19 @@ kreaativefitness/
 │   ├── js/
 │   │   └── main.js              # Interactive calculator, WhatsApp lead forwarder, tabs, FAQs
 │   └── images/
-│       ├── logo_clean.png       # Transparent circular logo
-│       ├── gym_interior_1.jpg   # Real gym interior
-│       ├── gym_team_1.jpg       # Team celebration photo
-│       ├── workout_dumbbells.jpg# Free weights & dumbbell rack
-│       ├── workout_cardio.jpg   # Cardio & treadmill floor
-│       ├── aerofit_weights.jpg  # Aerofit heavy weight plates
-│       ├── transformation.jpg   # Member transformation
-│       └── motivation_poster_*.jpg # Authentic motivational gym posters
+│       ├── logo_clean_hd.png    # High-resolution (512x512) transparent circular logo
+│       ├── gym_interior_1.jpg   # Ultra HD (1200x800) modern gym interior
+│       ├── gym_team_1.jpg       # Ultra HD (1200x899) team & coaching community
+│       ├── workout_dumbbells.jpg# Ultra HD (1200x800) free weights & dumbbell zone
+│       ├── workout_cardio.jpg   # Ultra HD (1200x800) modern cardio & treadmill suite
+│       ├── aerofit_weights.jpg  # Ultra HD (1200x800) Olympic barbells & heavy weights
+│       ├── zumba_dance.jpg      # Ultra HD (1200x800) high-energy Sunday Zumba class
+│       ├── weightloss_hiit.jpg  # Ultra HD (1200x800) athletic fat-burn HIIT conditioning
+│       ├── boxing_combat.jpg    # Ultra HD (1200x800) boxing gloves & heavy bag combat
+│       ├── boxing_ring.jpg      # Ultra HD (1200x800) combat fitness arena
+│       ├── functional_crossfit.jpg # Ultra HD (1200x801) CrossFit & functional rig
+│       ├── transformation.jpg   # Ultra HD (1200x800) 1-on-1 personal training coaching
+│       └── original_thumbnails/ # Preserved archive of low-res web thumbnails
 └── README.md                    # Documentation
 ```
 
