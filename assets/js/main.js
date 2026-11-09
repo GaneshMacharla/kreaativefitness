@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLiveGymStatus();
   initHeaderScroll();
   initMobileMenu();
+  initScrollSpy();
   initFaqAccordion();
   initScheduleTabs();
   initGalleryFilter();
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function initLiveGymStatus() {
   const badgeEl = document.getElementById('liveStatusBadge');
   const textEl = document.getElementById('liveStatusText');
+  const drawerBadge = document.getElementById('drawerStatusBadge');
+  const drawerText = document.getElementById('drawerStatusText');
   if (!badgeEl || !textEl) return;
 
   function updateStatus() {
@@ -63,9 +66,17 @@ function initLiveGymStatus() {
     if (isOpen) {
       badgeEl.className = 'status-badge';
       textEl.innerHTML = `<span class="status-dot"></span> <strong>${closingTimeMsg}</strong>`;
+      if (drawerBadge && drawerText) {
+        drawerBadge.className = 'status-badge';
+        drawerText.innerHTML = 'Open Now';
+      }
     } else {
       badgeEl.className = 'status-badge closed';
       textEl.innerHTML = `<span class="status-dot"></span> <span>${closingTimeMsg}</span>`;
+      if (drawerBadge && drawerText) {
+        drawerBadge.className = 'status-badge closed';
+        drawerText.innerHTML = 'Closed';
+      }
     }
   }
 
@@ -90,25 +101,60 @@ function initHeaderScroll() {
 }
 
 /* ==========================================================================
-   3. MOBILE NAVIGATION MENU
+   3. MOBILE NAVIGATION DRAWER
    ========================================================================== */
 function initMobileMenu() {
   const toggleBtn = document.getElementById('mobileMenuToggle');
-  const navMenu = document.getElementById('navMenu');
-  if (!toggleBtn || !navMenu) return;
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('mobileDrawerBackdrop');
+  const closeBtn = document.getElementById('closeDrawerBtn');
+  if (!toggleBtn || !drawer) return;
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    if (backdrop) backdrop.classList.add('open');
+    toggleBtn.classList.add('open');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    drawer.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('open');
+    toggleBtn.classList.remove('open');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+    drawer.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
 
   toggleBtn.addEventListener('click', () => {
-    const isOpen = navMenu.classList.toggle('open');
-    toggleBtn.classList.toggle('open', isOpen);
-    toggleBtn.setAttribute('aria-expanded', isOpen);
+    if (drawer.classList.contains('open')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
   });
 
-  // Close when clicking nav links
-  navMenu.querySelectorAll('.nav-link').forEach(link => {
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeDrawer);
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', closeDrawer);
+  }
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  });
+
+  // Close when clicking any nav link or CTA button inside drawer
+  drawer.querySelectorAll('.drawer-link, [data-open-trial-modal], .drawer-contact-btn').forEach(link => {
     link.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      toggleBtn.classList.remove('open');
-      toggleBtn.setAttribute('aria-expanded', 'false');
+      closeDrawer();
     });
   });
 }
@@ -378,4 +424,52 @@ function initSmoothScroll() {
       }
     });
   });
+}
+
+/* ==========================================================================
+   11. ACTIVE SCROLL SPY FOR NAVBAR
+   ========================================================================== */
+function initScrollSpy() {
+  const sections = document.querySelectorAll('section[id]');
+  const desktopLinks = document.querySelectorAll('.nav-menu .nav-link');
+  const drawerLinks = document.querySelectorAll('.mobile-drawer .drawer-link');
+  if (!sections.length) return;
+
+  function onScroll() {
+    const scrollPos = window.scrollY + 120;
+    let currentId = '';
+
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentId = section.getAttribute('id');
+      }
+    });
+
+    if (window.scrollY < 200) {
+      currentId = 'home';
+    }
+
+    desktopLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${currentId}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+
+    drawerLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href === `#${currentId}`) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
